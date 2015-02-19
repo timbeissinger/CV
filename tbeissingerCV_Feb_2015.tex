@@ -1,0 +1,617 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Simple LaTeX CV Template %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NOTE: If you find that it says                                     %%
+%%                                                                    %%
+%%                           1 of ??                                  %%
+%%                                                                    %%
+%% at the bottom of your first page, this means that the AUX file     %%
+%% was not available when you ran LaTeX on this source. Simply RERUN  %%
+%% LaTeX to get the ``??'' replaced with the number of the last page  %%
+%% of the document. The AUX file will be generated on the first run   %%
+%% of LaTeX and used on the second run to fill in all of the          %%
+%% references.                                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Don't like 10pt? Try 11pt or 12pt
+\documentclass[10pt]{article}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+
+
+% Simpler bibsection for CV sections
+% (thanks to natbib for inspiration)
+\makeatletter
+\newlength{\bibhang}
+\setlength{\bibhang}{1em}
+\newlength{\bibsep}
+ {\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
+\newenvironment{bibsection}%
+        {\vspace{-\baselineskip}\begin{list}{}{%
+       \setlength{\leftmargin}{\bibhang}%
+       \setlength{\itemindent}{-\leftmargin}%
+       \setlength{\itemsep}{\bibsep}%
+       \setlength{\parsep}{\z@}%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+\makeatother
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.2in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=1in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+%% This gives us fun enumeration environments. compactitem will be nice.
+\usepackage{paralist}
+
+%% Reference the last page in the page number
+%
+% NOTE: comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE: uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+\usepackage{graphicx}
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+%
+% Usage: \makeheading{name}
+%
+% Place at top of document. It should be the first thing.
+\newcommand{\makeheading}[1]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+                {\large \bfseries #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+%
+% Follow this section IMMEDIATELY with the first line of the section
+% text. Do not put whitespace in between. That is, do this:
+%
+%       \section{My Information}
+%       Here is my information.
+%
+% and NOT this:
+%
+%       \section{My Information}
+%
+%       Here is my information.
+%
+% Otherwise the top of the section header will not line up with the top
+% of the section. Of course, using a single comment character (%) on
+% empty lines allows for the function of the first example with the
+% readability of the second example.
+\renewcommand{\section}[2]%
+        {\pagebreak[2]\vspace{1.3\baselineskip}%
+         \phantomsection\addcontentsline{toc}{section}{#1}%
+         \hspace{0in}%
+         \marginpar{
+         \raggedright \scshape #1}#2}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{compactitem}[#1]}{\end{compactitem}}
+
+
+% An environment IDENTICAL to innerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{loneinnerlist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{compactitem}[#1]}
+        {\end{compactitem}\vspace{-.6\baselineskip}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[2]}
+
+% Uses hyperref to link DOI
+\newcommand\doilink[1]{\href{http://dx.doi.org/#1}{#1}}
+\newcommand\doi[1]{doi:\doilink{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading{Timothy M. Beissinger \hfill \hfill }
+
+
+\section{Contact Information}
+%
+% NOTE: Mind where the & separators and \\ breaks are in the following
+%       table.
+%
+% ALSO: \rcollength is the width of the right column of the table
+%       (adjust it to your liking; default is 1.85in).
+%
+\newlength{\rcollength}\setlength{\rcollength}{1.85in}%
+%
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}} 
+Department of Plant Sciences         &  (608) 320-1913 \\
+University of California, Davis      & \href{mailto:beissinger@ucdavis.edu}{beissinger@ucdavis.edu}\\
+Davis, CA 95616        & 
+\end{tabular}
+
+%% \section{Citizenship}
+%% %
+%% USA
+
+\section{Education}
+%
+\href{http://www.wisc.edu}{\textbf{The University of Wisconsin at Madison}},
+Madison, Wisconsin USA
+\begin{outerlist}
+
+\item[] Ph.D.,
+             \textbf{Statistical and Quantitative Genetics}
+              \hfill May 2014
+        \begin{innerlist}
+%        \item[] Dissertation title: Identifying traces of selection on quantitative traits in plant and animal genomes
+        \item[] Departments: Agronomy and Animal Science
+        \item[] Advisors:
+              \href{http://cornbreeding.wisc.edu/project_leader}
+                   {Professors Natalia de Leon} and
+              \href{http://www.ansci.wisc.edu/facstaff/Faculty/pages/gianola/index.html}
+                   {Daniel Gianola}
+%        \item[] GPA: 3.7
+        \end{innerlist}
+
+\item[] M.S.,
+          \textbf{Statistics}
+          \hfill May 2011
+%          \begin{innerlist}
+%            \item[] GPA: 3.6
+%          \end{innerlist}
+
+\item[] B.S.,
+        \textbf{Mathematics and Geography} \hfill  May 2009
+%        \begin{innerlist}
+%        \item[] GPA: 3.5
+%        \end{innerlist}
+
+\end{outerlist}
+
+
+%% \section{Research Statement}
+%% My research involves studying the genomic effects of long-term selection on populations. Three of my main focuses are identifying regions under selection based on pooled population sequencing, defining boundaries for window-averaging techniques based on smoothing spline methods, and developing a genome-scan to detect historical epistatic selection based on linkage disequilibrium within and between populations.  My interests cover a broad range of species, but those that I chiefly work with are \emph{Bos taurus} and \emph{Zea mays} (cattle and corn).  I also work on understanding and improving SNP calling from low coverage sequence data, quantitative trait locus mapping, and genome wide association studies.
+
+
+\section{Employment}
+%
+\textbf{Postdoctoral Research Associate} \hfill {June 2014 - Present}
+\begin{innerlist}
+\item[] Mentored by \href{http://www.rilab.org}{Professor Jeff Ross-Ibarra}
+\begin{innerlist}
+\item[] \href{http://www.plantsciences.ucdavis.edu/plantsciences/}{Department of Plant Sciences}
+\item[] \href{http://www.ucdavis.edu/}{University of California, Davis}
+\end{innerlist}
+\item[]
+\end{innerlist}
+
+\textbf{Visiting Scientist} \hfill {Jan - Apr 2014}
+\begin{innerlist}
+\item[] Mentored by \href{http://www.uni-goettingen.de/en/104188.html}{Professor Henner Simianer}
+\begin{innerlist}
+\item[] \href{http://www.uni-goettingen.de/en/92842.html}{Department of Animal Breeding and Genetics}
+\item[] \href{http://www.uni-goettingen.de/en/1.html}{Georg-August
+    Universit\"at}, G\"ottingen, Germany
+%\item[] Funded by \href{http://www.synbreed.tum.de/}{Synbreed - Synergistic Plant and Animal Breeding}
+\end{innerlist}
+\item[]
+\end{innerlist}
+
+\textbf{Research Assistant} \hfill {2009 - 2014}
+\begin{innerlist}
+\item[] \href{http://agronomy.wisc.edu}{Department of Agronomy}
+\item[] \href{http://www.wisc.edu}{University of Wisconsin, Madison}
+\end{innerlist}
+
+
+%% \textbf{Student Hourly and Intern} \hfill {2006 - 2009}
+%% \begin{innerlist}
+%% \item[] \href{http://agronomy.wisc.edu}{Department of Agronomy}
+%% \begin{innerlist}
+%% \item[] \href{http://www.wisc.edu}{University of Wisconsin, Madison}
+%% \end{innerlist}
+%% \item[] Experiences included corn seed preparation, nursery and field trial planting, pollinations, harvesting and sample processing, as well as other greenhouse related activities.  
+%% \end{innerlist}
+
+%% \textbf{Lab Assistant} \hfill {2006}
+%% \begin{innerlist}
+%% \item[] \href{http://www.waisman.wisc.edu}{Waisman Center}
+%% \begin{innerlist}
+%% \item[] \href{http://www.wisc.edu}{University of Wisconsin, Madison}
+%% \end{innerlist}
+%% \item[] Outlined digital MRI scans on a UNIX system for use in medical software development.
+%% \end{innerlist}
+
+%% \textbf{Office Assistant} \hfill {Summers 2005, 2006}
+%% \begin{innerlist}
+%% \item[] Teaching Integrated Math and Science Project
+%% \begin{innerlist}
+%% \item[] \href{http://www.uic.edu}{University of Illinois at Chicago}
+%% \end{innerlist}
+%% \item[] Wrote and edited small parts of an elementary level math textbook (\href{http://www.kendallhunt.com/mtb3/}{Math Trailblazers}), transcribed interviews
+%% \end{innerlist}
+
+
+\section{ \hfill  \\ Publications}
+%
+\begin{innerlist}
+\item[] \textbf{Beissinger, T.M.}, Gholami, M., Erbe, M., Weigend, S., Weigend, A., de Leon, N., Gianola, D., Simianer, H. Using the variability of linkage disequilibrium between subpopulations to scan for selection in a diverse panel of chickens. {\it Submitted.}
+\item[]
+\item[] \textbf{Beissinger, T.M.}, Rosa, J.G.M., Kaeppler, S.M., de
+  Leon, N., Gianola, D. Defining window-boundaries for genomic
+  analyses using smoothing spline techniques. Genetics Selection
+  Evolution. {\it In Press.}
+\item[]
+\item[]  Lorenz, A. J., \textbf{Beissinger, T.M.}, Rodrigues, R., de
+  Leon, N. Selection for silage yield and composition did not affect
+  genomic diversity within the Wisconsin Quality Synthetic maize
+  population. Genes Genomes Genetics. DOI: 10.1534/g3.114.015263.
+\item[]
+\item[] Foerster, J.M., \textbf{Beissinger, T.M.}, de Leon, N.,
+  Kaeppler, S.M. 2015. Large effect QTL explain natural phenotypic variation
+  for the developmental timing of vegetative phase change in maize
+  ({\it Zea mays L.}). Theoretical and Applied Genetics. DOI: 10.1007/s00122-014-2451-3.
+\item[]
+\item[] \textbf{Beissinger, T.M.}, Hirsch, C.N., Vaillancourt, B., Deshpande, S., Barry, K., Buell, C. R., Kaeppler, S. M., Gianola, D., de Leon, N. 2014. A genome-wide scan for evidence of selection in a maize population under long-term artificial selection for ear number. Genetics. 196(3): 829-840.
+\item[]
+\item[] Hirsch, C.N.,  Flint-Garcia, S.A., \textbf{Beissinger, T.M.},
+  Eichten, S.R., Deshpande, S., Barry, K., Springer, N.M., Buell,
+  C.R., de Leon, N., Kappler, S.M. 2014. Insights into the effects of
+  long-term artificial selection on seed size in
+  maize. Genetics. 198(1): 409-421.
+\item[]
+\item[] *\textbf{Beissinger, T.M.}, Hirsch, C.N., Sekhon, R.S., Foerster, J.M., Johnson, J.M., Muttoni, G., Vaillancourt, B., Buell, C.R., Kaeppler, S.M., de Leon, N. 2013. Marker density and read-depth for genotyping populations using genotyping-by-sequencing. Genetics. 193: 1073-1081.
+\item[] * Selected as a highlighted article by the editorial board.
+\item[]
+\item[] Wu, X., Chuanyu, S., \textbf{Beissinger, T.M.}, Rosa, G., Weigel, K., de Leon, N., Gianola, D. 2012. Parallel Markov chain Monte Carlo - bridging the gap to high performance Bayesian computation in animal breeding and genetics. Genet Sel Evol. 44:29.
+\item[]
+\item[] Wu, X., \textbf{Beissinger, T.M.}, Bauck, S., Woodward, B., Rosa, G., Weigel, K., de Leon, N., Gianola, D. 2011. A primer on high-throughput computing for genomic selection. Frontiers in Genetics. 2, 4.
+\end{innerlist}
+
+\section{\hfill \\ Software}
+%
+\begin{innerlist}
+  \item[] \textbf{GenWin: Spline Based Window Boundaries for Genomic Analyses}
+  \item[] An R package for analyzing genetic data across distinct bins.
+  \item[] \href{http://cran.r-project.org/web/packages/GenWin/index.html}{http://cran.r-project.org/web/packages/GenWin/index.html}
+\end{innerlist}
+
+\section{\hfill \\ Grants}
+\begin{innerlist}
+% \item[] \textbf{2013, USDA  NIFA, Agriculture and food research initiative,
+%   foundational program.} Assisted in writing (but was not eligible to serve as co-PI)
+%   a grant to study long-term selection in maize. Grant was
+%   recommended for funding but not funded.
+%\item[]
+\item[] \textbf{2012, University of Wisconsin Graduate School.} Awarded one year of
+  funding and supplies to support dissertation research. 
+\item[]
+\item[] \textbf{2012, DuPont-Pioneer and UW Associated Students of Madison.} Co-authored grant to support
+  the first University of Wisconsin Plant Sciences Symposium.
+\item[]
+ \item[] \textbf{2011, DuPont-Pioneer.} Awarded funding to genotyping 240 samples with the
+   Pioneer Public SNP array.
+\end{innerlist}
+
+\section{Conference, Webinar, and Departmental Presentations}
+\textbf{Invited}
+\begin{innerlist}
+\item[] Beissinger, T., Wang, L., Durvasula, A., Crosby, K., Hufford,
+  M., and Ross-Ibarra,
+  J. \href{http://www.maizegdb.org/maize_meeting/2015/}{57th Annual Maize Genetics
+  Conference}
+\item[] March, 2015
+\item[]
+\item[] Beissinger, T. \href{http://www.intlpag.org/}{Plant and Animal Genome Conference 23}
+\item[] Genomic selection and genome-wide association studies workshop
+\item[] January 2015
+\item[]
+\item[] Beissinger, T. \href{http://animalscience.ucdavis.edu/}{Department of Animal
+    Science, University of California, Davis}
+\item[] August, 2014
+\item[]
+\item[] Beissinger, T. \href{http://www.uni-goettingen.de/en/92842.html}{Department of Animal Breeding and Genetics}, \href{http://www.uni-goettingen.de/en/1.html}{Georg-August Universitat}
+\item[] February 2014
+\item[]
+\item[] Beissinger, T. \href{http://www.wzw.tum.de/}{Center of Life and Food Sciences}, \href{http://www.tum.de/}{Technische Universitat Munchen}
+%\item[] Host: Chris-Carolin Schon, \href{http://www.synbreed.tum.de/}{Synbreed}
+\item[] April 2014
+\item[]
+\item[] Beissinger, T. \href{http://animalscience.unl.edu/}{Animal Science
+    Department, University of Nebraska, Lincoln}
+\item[] December, 2013
+\item[]
+\item[] Beissinger, T., Hirsch, C., Buell, R.C., Kaeppler, S., Gianola, D., de Leon, N. Gordon Research Seminar in Quantitative Genetics and Genomics. Galveston, TX, February, 2013.
+\item[]
+\end{innerlist}
+%
+%\section{\hfill \\ Conference and Webinar Presentations}
+%\begin{innerlist}
+\textbf{Contributed}
+\begin{innerlist}
+\item[] Beissinger, T. Bay Area Population Genomics Meeting XI. Davis,
+  CA, December, 2014.
+\item[]
+\item[] Beissinger, T. Corn Breeding Webinar Series, hosted by Dr. Rex Bernardo at the University of Minnesota. December, 2012.
+\item[]
+\item[] Beissinger, T., Hansey, C., Sekhon, R., Vaillancourt, B., Buell, C.R., Kaeppler, S., de Leon, N. North Central Regional Corn Breeding Research Meeting. Portland, OR, March, 2012.
+\end{innerlist}
+
+
+\section{\hfill \\ Poster Abstracts}
+\begin{innerlist}
+\item[] Beissinger, T. and Ross Ibarra, J.
+  \href{http://www.intlpag.org/}{Plant and Animal Genome Conference
+    23}. San Diego, CA, January 10-14, 2015.
+\item[]
+\item[] Beissinger, T., Gianola, D., de Leon, N. Impact of Large-Scale Genomic Data on Statistical and Quantitative Genetics Conference. Seattle, WA, November 23-26, 2013.
+\item[]
+\item[] Beissinger, T., Hirsch, C., Vaillancourt, B., Buell, R.C., Kaeppler, S., Gianola, D., de Leon, N. Maize Genetics Conference. St. Charles, Il, March 14-17, 2013.
+\item[]
+\item[] Beissinger, T., Hirsch, C., Buell, R.C., Kaeppler, S., Gianola, D., de Leon, N. Gordon Research Seminar in Quantitative Genetics and Genomics. Galveston, TX, February 16-17, 2013.
+\item[]
+\item[] Beissinger, T., Hansey, C., Foerster, J., Sekhon, R., Johnson, J., Muttoni, G., Vaillancourt, B., Buell, C.R., Kaeppler, S., de Leon, N. Maize Genetics Conference. Portland, OR, March 15-18, 2012.
+\item[]
+  \item[] Beissinger, T., de Leon, N., Kaeppler, S. Maize Genetics Conference. St Charles, IL, March 17-20, 2011.
+\item[]
+\end{innerlist}
+
+\section{Teaching Experience}
+%
+\textbf{Co-instructor}
+\begin{innerlist}
+\item[] Intoduction to Linux and High Throughput Computing \hfill Fall 2010
+\begin{innerlist}
+\item[] University of Wisconsin, Madison \href{http://www.ansci.wisc.edu/}{Department of Animal Sciences}
+\end{innerlist}
+\end{innerlist}
+
+\vspace{3mm}
+\textbf{Teaching assistant}
+\begin{innerlist}
+\item[] Biometrical Procedures in Plant Breeding \hfill Fall 2011, 2013
+\begin{innerlist}
+\item[] University of Wisconsin, Madison \href{http://agronomy.wisc.edu}{Department of Agronomy}
+\end{innerlist}
+
+\item[]
+
+\item[] Experimental Design \hfill Spring 2013
+\begin{innerlist}
+\item[] University of Wisconsin, Madison \href{http://agronomy.wisc.edu}{Department of Agronomy}
+\end{innerlist}
+
+\item[]
+
+\item[] Advanced Plant Breeding \hfill Spring 2012
+\begin{innerlist}
+\item[] University of Wisconsin, Madison \href{http://agronomy.wisc.edu}{Department of Agronomy}
+\end{innerlist}
+\end{innerlist}
+\vspace{3mm}
+
+\textbf{Tutoring}
+\begin{innerlist}
+\item[] Statistics \hfill Fall 2010 - Spring 2011
+\begin{innerlist}
+\item[] Advanced Placement Statistics
+\end{innerlist}
+
+\item[]
+
+\item[] Calculus \hfill Fall 2006- Spring 2007
+\begin{innerlist}
+\item[] Advanced Placement Calculus AB
+\end{innerlist}
+\end{innerlist}
+
+
+%% \section{Leadership}
+%% \href{http://psgsc.wisc.edu}{Plant Sciences Graduate Student Council} treasurer \hfill 2011
+%% \begin{innerlist}
+%%   \item[] Included managing finances for graduate student council events and major involvement in the organization and administration of the first UW Plant Sciences Symposium.
+%% \item[]
+%% \item[]
+%% \end{innerlist}
+
+\section{\hfill \\ Reviewed for}
+\begin{innerlist}
+\item[] \href{https://peerj.com/}{PeerJ}
+\item[]\href{http://www.biomedcentral.com/bmcevolbiol}{BMC
+    Evolutionary Biology}
+\end{innerlist}
+
+
+\section{Awards and Scholarships}
+Monsanto fellowship recipient \hfill 2009-2014
+\vspace{1 mm}
+
+Scholarship to attend Summer Institute in Statistical  Genetics  \hfill 2012  \\
+\hspace*{3mm} University of Washington, Seattle
+
+\vspace{1 mm}
+Scholarship to attend TeraGrid Conference \hfill 2010 \\
+\hspace*{3mm} Pittspburgh, PA
+
+\vspace{1 mm}
+
+Scholarship to attend Open Science Grid Summer School \hfill 2010 \\
+\hspace*{3mm} Madison, WI
+
+\vspace{1 mm}
+
+Undergraduate deans list \hfill All semesters 2007-2009
+
+\vspace{1 mm}
+
+Susan B. Hotchkiss memorial scholarship \hfill 2005
+
+\section{Academic and Professional Development}
+Monsanto Fellows Professional Development Program \hfill September 2012
+%% \begin{innerlist}
+%% \item[] ``Breeding for changing environments''
+%% \item[] Held at \href{http://www.monsanto.com}{Monsanto Company} Iowa research facility \\
+%%       Ankeny, Ia
+%% \end{innerlist}
+
+17th Summer Institute in Statistical Genetics \hfill July 2012
+%% \begin{innerlist}
+%% \item[] Held at University of Washington -- Seattle
+%% \item[] Modules attended: MCMC for genetics, Mixed models in quantitative genetics, Coalescent Theory
+%% \end{innerlist}
+
+Monsanto Fellows Professional Development Program \hfill September 2011
+%% \begin{innerlist}
+%% \item[] ``Preparing for an entrepreneurial career in plant breeding''
+%% \item[] Held at \href{http://www.ncsu.edu/}{North Carolina State University} \\
+%%       Raleigh, North Carolina
+%% \end{innerlist}
+
+Monsanto Fellows Professional Development Program  \hfill September 2010
+%% \begin{innerlist}
+%% \item[] ``Business in Science'' 
+%% \item[] Held at \href{http://www.monsanto.com}{Monsanto Company} headquarters \\
+%%       St. Louis, Missouri
+%% \end{innerlist}
+
+Monsanto Fellows Professional Development Program \hfill September 2009
+%% \begin{innerlist}
+%% \item[] Held at \href{http://www.ncsu.edu/}{North Carolina State University} \\
+%%       Kannapolis, North Carolina
+%% \end{innerlist} 
+
+University of Wisconsin Plant Breeding Internship \hfill Summer 2008
+%% \begin{innerlist} 
+%% \item[] Included a trip to the International Research Center for Maize and Wheat Breeding (\href{http://www.cimmyt.org}{CIMMYT}) in Mexico.
+%% \end{innerlist}
+
+\section{Languages}
+English: Mother tongue \\
+Spansih: Basic abilities
+
+\section{Computer Abilities}
+Software
+\begin{innerlist}
+\item[] R, Linux/Unix, SAS, Latex, Condor, Java, Perl
+\end{innerlist}
+
+\vspace{3 mm}
+
+Linux workstation system administrator \hfill 2010 - 2014
+%% \begin{innerlist}
+%% \item[] Managed remote server for over 30 users that interfaces with the UW Center for High Throughput Computing resources.
+%% \end{innerlist}
+
+\vspace{3 mm}
+
+Participated in   \href{http://www.opensciencegrid.org}{Open Science Grid} Summer School \hfill July 2010
+%% \begin{innerlist}
+%% \item[] Granted full funding to attend the school
+%% %\item[] Learned various tools to implement high throughput computing (running programs on thousands of computers simultaneously) 
+%% \end{innerlist}
+
+\section{Statistical Expertise}
+%
+Bayesian analysis, estimation of functions from data, mixed models, mathematical statistics, statistical inference, linear regression and analysis of variance
+
+\section{Mathematical Expertise}
+%
+Real and complex analysis, combinatorics, topology, number theory, modern algebra, cellular automata
+
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% End CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
